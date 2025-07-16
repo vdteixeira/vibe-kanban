@@ -1,12 +1,12 @@
 [package]
-name = "vibe-kanban"
+name = "toolflow"
 version = "0.0.48"
 edition = "2021"
-default-run = "vibe-kanban"
+default-run = "toolflow"
 build = "build.rs"
 
 [lib]
-name = "vibe_kanban"
+name = "toolflow"
 path = "src/lib.rs"
 
 [lints.clippy]

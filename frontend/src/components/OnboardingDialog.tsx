@@ -60,7 +60,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
         <DialogHeader>
           <div className="flex items-center gap-3">
             <Sparkles className="h-6 w-6 text-primary" />
-            <DialogTitle>Welcome to Vibe Kanban</DialogTitle>
+            <DialogTitle>Welcome to ToolFlow</DialogTitle>
           </div>
           <DialogDescription className="text-left pt-2">
             Let's set up your coding preferences. You can always change these

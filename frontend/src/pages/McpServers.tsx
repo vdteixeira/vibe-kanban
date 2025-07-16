@@ -121,7 +121,7 @@ export function McpServers() {
     }
   };
 
-  const handleConfigureVibeKanban = async () => {
+  const handleConfigureToolFlow = async () => {
     if (!selectedMcpExecutor) return;
 
     try {
@@ -129,19 +129,19 @@ export function McpServers() {
       const existingConfig = mcpServers.trim() ? JSON.parse(mcpServers) : {};
 
       // Always use production MCP installation instructions
-      const vibeKanbanConfig = {
+      const toolFlowConfig = {
         command: 'npx',
-        args: ['-y', 'vibe-kanban', '--mcp'],
+        args: ['-y', 'toolflow', '--mcp'],
       };
 
-      // Add vibe_kanban to the existing configuration
+      // Add toolflow to the existing configuration
       let updatedConfig;
       if (selectedMcpExecutor === 'amp') {
         updatedConfig = {
           ...existingConfig,
           'amp.mcpServers': {
             ...(existingConfig['amp.mcpServers'] || {}),
-            vibe_kanban: vibeKanbanConfig,
+            toolflow: toolFlowConfig,
           },
         };
       } else {
@@ -149,7 +149,7 @@ export function McpServers() {
           ...existingConfig,
           mcpServers: {
             ...(existingConfig.mcpServers || {}),
-            vibe_kanban: vibeKanbanConfig,
+            toolflow: toolFlowConfig,
           },
         };
       }
@@ -159,8 +159,8 @@ export function McpServers() {
       setMcpServers(configJson);
       setMcpError(null);
     } catch (err) {
-      setMcpError('Failed to configure vibe-kanban MCP server');
-      console.error('Error configuring vibe-kanban:', err);
+      setMcpError('Failed to configure ToolFlow MCP server');
+      console.error('Error configuring ToolFlow:', err);
     }
   };
 
@@ -348,14 +348,14 @@ export function McpServers() {
 
                 <div className="pt-4">
                   <Button
-                    onClick={handleConfigureVibeKanban}
+                    onClick={handleConfigureToolFlow}
                     disabled={mcpApplying || mcpLoading || !selectedMcpExecutor}
                     className="w-64"
                   >
-                    Add Vibe-Kanban MCP
+                    Add ToolFlow MCP
                   </Button>
                   <p className="text-sm text-muted-foreground mt-2">
-                    Automatically adds the Vibe-Kanban MCP server.
+                    Automatically adds the ToolFlow MCP server.
                   </p>
                 </div>
               </div>

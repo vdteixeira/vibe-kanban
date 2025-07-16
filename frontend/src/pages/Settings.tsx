@@ -462,7 +462,7 @@ export function Settings() {
             <CardHeader>
               <CardTitle>Privacy</CardTitle>
               <CardDescription>
-                Help improve Vibe-Kanban by sharing anonymous usage data.
+                Help improve ToolFlow by sharing anonymous usage data.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
