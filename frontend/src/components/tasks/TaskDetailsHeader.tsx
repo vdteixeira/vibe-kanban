@@ -19,6 +19,7 @@ interface TaskDetailsHeaderProps {
 
 const statusLabels: Record<TaskStatus, string> = {
   todo: 'To Do',
+  planning: 'Planning',
   inprogress: 'In Progress',
   inreview: 'In Review',
   done: 'Done',
@@ -29,6 +30,8 @@ const getTaskStatusDotColor = (status: TaskStatus): string => {
   switch (status) {
     case 'todo':
       return 'bg-gray-400';
+    case 'planning':
+      return 'bg-purple-500';
     case 'inprogress':
       return 'bg-blue-500';
     case 'inreview':

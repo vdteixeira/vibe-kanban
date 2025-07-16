@@ -22,7 +22,7 @@ export type SoundConstants = { sound_files: Array<SoundFile>, sound_labels: Arra
 
 export type ConfigConstants = { editor: EditorConstants, sound: SoundConstants, };
 
-export type ExecutorConfig = { "type": "echo" } | { "type": "claude" } | { "type": "amp" } | { "type": "gemini" } | { "type": "setupscript", script: string, } | { "type": "charmopencode" };
+export type ExecutorConfig = { "type": "echo" } | { "type": "claude" } | { "type": "amp" } | { "type": "gemini" } | { "type": "prp" } | { "type": "setupscript", script: string, } | { "type": "charmopencode" };
 
 export type ExecutorConstants = { executor_types: Array<ExecutorConfig>, executor_labels: Array<string>, };
 
@@ -46,7 +46,7 @@ export type CreateTask = { project_id: string, title: string, description: strin
 
 export type CreateTaskAndStart = { project_id: string, title: string, description: string | null, executor: ExecutorConfig | null, };
 
-export type TaskStatus = "todo" | "inprogress" | "inreview" | "done" | "cancelled";
+export type TaskStatus = "todo" | "planning" | "inprogress" | "inreview" | "done" | "cancelled";
 
 export type Task = { id: string, project_id: string, title: string, description: string | null, status: TaskStatus, created_at: string, updated_at: string, };
 
@@ -122,6 +122,7 @@ export const EXECUTOR_TYPES: string[] = [
     "claude",
     "amp",
     "gemini",
+    "prp",
     "charmopencode"
 ];
 
@@ -139,6 +140,7 @@ export const EXECUTOR_LABELS: Record<string, string> = {
     "claude": "Claude",
     "amp": "Amp",
     "gemini": "Gemini",
+    "prp": "PRP Generator",
     "charmopencode": "Charm Opencode"
 };
 

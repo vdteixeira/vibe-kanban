@@ -10,6 +10,7 @@ export const EXECUTOR_TYPES: string[] = [
     "claude",
     "amp",
     "gemini",
+    "prp",
     "charmopencode"
 ];
 
@@ -27,6 +28,7 @@ export const EXECUTOR_LABELS: Record<string, string> = {
     "claude": "Claude",
     "amp": "Amp",
     "gemini": "Gemini",
+    "prp": "PRP Generator",
     "charmopencode": "Charm Opencode"
 };
 
