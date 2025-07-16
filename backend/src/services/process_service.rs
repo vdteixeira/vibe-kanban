@@ -638,6 +638,7 @@ impl ProcessService {
             Some("claude") => crate::executor::ExecutorConfig::Claude,
             Some("amp") => crate::executor::ExecutorConfig::Amp,
             Some("gemini") => crate::executor::ExecutorConfig::Gemini,
+            Some("prp") => crate::executor::ExecutorConfig::Prp,
             Some("charmopencode") => crate::executor::ExecutorConfig::CharmOpencode,
             _ => crate::executor::ExecutorConfig::Echo, // Default for "echo" or None
         }
@@ -827,6 +828,10 @@ impl ProcessService {
                     }
                     crate::executor::ExecutorConfig::SetupScript { .. } => {
                         // Setup scripts don't support followup, use regular setup script
+                        config.create_executor()
+                    }
+                    crate::executor::ExecutorConfig::Prp => {
+                        // PRP doesn't support followup, use regular PRP executor
                         config.create_executor()
                     }
                 };

@@ -10,6 +10,7 @@ use uuid::Uuid;
 #[ts(export)]
 pub enum TaskStatus {
     Todo,
+    Planning,
     InProgress,
     InReview,
     Done,

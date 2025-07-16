@@ -34,6 +34,8 @@
     --info-foreground: 222.2 84% 4.9%;
     --neutral: 210 40% 96%;
     --neutral-foreground: 222.2 84% 4.9%;
+    --planning: 280 100% 70%;
+    --planning-foreground: 280 100% 15%;
 
     /* Status indicator colors */
     --status-init: 210 40% 96%;

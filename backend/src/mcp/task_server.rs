@@ -127,6 +127,7 @@ fn parse_task_status(status_str: &str) -> Option<TaskStatus> {
 fn task_status_to_string(status: &TaskStatus) -> String {
     match status {
         TaskStatus::Todo => "todo".to_string(),
+        TaskStatus::Planning => "planning".to_string(),
         TaskStatus::InProgress => "in-progress".to_string(),
         TaskStatus::InReview => "in-review".to_string(),
         TaskStatus::Done => "done".to_string(),

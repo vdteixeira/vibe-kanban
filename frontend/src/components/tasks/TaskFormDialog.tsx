@@ -239,6 +239,7 @@ export function TaskFormDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="todo">To Do</SelectItem>
+                  <SelectItem value="planning">Planning</SelectItem>
                   <SelectItem value="inprogress">In Progress</SelectItem>
                   <SelectItem value="inreview">In Review</SelectItem>
                   <SelectItem value="done">Done</SelectItem>

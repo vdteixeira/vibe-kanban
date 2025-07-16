@@ -22,6 +22,7 @@ interface TaskKanbanBoardProps {
 
 const allTaskStatuses: TaskStatus[] = [
   'todo',
+  'planning',
   'inprogress',
   'inreview',
   'done',
@@ -30,6 +31,7 @@ const allTaskStatuses: TaskStatus[] = [
 
 const statusLabels: Record<TaskStatus, string> = {
   todo: 'To Do',
+  planning: 'Planning',
   inprogress: 'In Progress',
   inreview: 'In Review',
   done: 'Done',
@@ -38,6 +40,7 @@ const statusLabels: Record<TaskStatus, string> = {
 
 const statusBoardColors: Record<TaskStatus, string> = {
   todo: 'hsl(var(--neutral))',
+  planning: 'hsl(var(--planning))',
   inprogress: 'hsl(var(--info))',
   inreview: 'hsl(var(--warning))',
   done: 'hsl(var(--success))',

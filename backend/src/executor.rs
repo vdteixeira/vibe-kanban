@@ -8,7 +8,7 @@ use uuid::Uuid;
 
 use crate::executors::{
     AmpExecutor, CharmOpencodeExecutor, ClaudeExecutor, EchoExecutor, GeminiExecutor,
-    SetupScriptExecutor,
+    PrpExecutor, SetupScriptExecutor,
 };
 
 // Constants for database streaming
@@ -345,6 +345,7 @@ pub enum ExecutorConfig {
     Claude,
     Amp,
     Gemini,
+    Prp,
     SetupScript { script: String },
     CharmOpencode,
     // Future executors can be added here
@@ -369,6 +370,7 @@ impl FromStr for ExecutorConfig {
             "claude" => Ok(ExecutorConfig::Claude),
             "amp" => Ok(ExecutorConfig::Amp),
             "gemini" => Ok(ExecutorConfig::Gemini),
+            "prp" => Ok(ExecutorConfig::Prp),
             "charmopencode" => Ok(ExecutorConfig::CharmOpencode),
             "setup_script" => Ok(ExecutorConfig::SetupScript {
                 script: "setup script".to_string(),
@@ -385,6 +387,7 @@ impl ExecutorConfig {
             ExecutorConfig::Claude => Box::new(ClaudeExecutor),
             ExecutorConfig::Amp => Box::new(AmpExecutor),
             ExecutorConfig::Gemini => Box::new(GeminiExecutor),
+            ExecutorConfig::Prp => Box::new(PrpExecutor),
             ExecutorConfig::CharmOpencode => Box::new(CharmOpencodeExecutor),
             ExecutorConfig::SetupScript { script } => {
                 Box::new(SetupScriptExecutor::new(script.clone()))
@@ -405,6 +408,7 @@ impl ExecutorConfig {
             ExecutorConfig::Gemini => {
                 dirs::home_dir().map(|home| home.join(".gemini").join("settings.json"))
             }
+            ExecutorConfig::Prp => None, // PRP doesn't need external configuration
             ExecutorConfig::SetupScript { .. } => None,
         }
     }
@@ -417,6 +421,7 @@ impl ExecutorConfig {
             ExecutorConfig::Claude => Some(vec!["mcpServers"]),
             ExecutorConfig::Amp => Some(vec!["amp", "mcpServers"]), // Nested path for Amp
             ExecutorConfig::Gemini => Some(vec!["mcpServers"]),
+            ExecutorConfig::Prp => None, // PRP doesn't support MCP
             ExecutorConfig::SetupScript { .. } => None, // Setup scripts don't support MCP
         }
     }
@@ -425,7 +430,7 @@ impl ExecutorConfig {
     pub fn supports_mcp(&self) -> bool {
         !matches!(
             self,
-            ExecutorConfig::Echo | ExecutorConfig::SetupScript { .. }
+            ExecutorConfig::Echo | ExecutorConfig::Prp | ExecutorConfig::SetupScript { .. }
         )
     }
 
@@ -437,6 +442,7 @@ impl ExecutorConfig {
             ExecutorConfig::Claude => "Claude",
             ExecutorConfig::Amp => "Amp",
             ExecutorConfig::Gemini => "Gemini",
+            ExecutorConfig::Prp => "PRP Generator",
             ExecutorConfig::SetupScript { .. } => "Setup Script",
         }
     }
@@ -449,6 +455,7 @@ impl std::fmt::Display for ExecutorConfig {
             ExecutorConfig::Claude => "claude",
             ExecutorConfig::Amp => "amp",
             ExecutorConfig::Gemini => "gemini",
+            ExecutorConfig::Prp => "prp",
             ExecutorConfig::CharmOpencode => "charmopencode",
             ExecutorConfig::SetupScript { .. } => "setup_script",
         };
