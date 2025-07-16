@@ -60,7 +60,7 @@ export function Navbar() {
           <div className="flex items-center space-x-1">
             <Button asChild variant="ghost" size="sm">
               <a
-                href="https://vibekanban.com/"
+                href="https://toolflow.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

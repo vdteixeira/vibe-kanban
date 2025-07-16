@@ -145,7 +145,7 @@ impl GitService {
     fn create_initial_commit(&self, repo: &Repository) -> Result<(), GitServiceError> {
         let signature = repo.signature().unwrap_or_else(|_| {
             // Fallback if no Git config is set
-            git2::Signature::now("Vibe Kanban", "noreply@vibekanban.com")
+            git2::Signature::now("ToolFlow", "noreply@toolflow.dev")
                 .expect("Failed to create fallback signature")
         });
 
@@ -216,7 +216,7 @@ impl GitService {
                 Some("HEAD"),                                    // Update HEAD
                 &signature,                                      // Author
                 &signature,                                      // Committer
-                &format!("Merge: {} (vibe-kanban)", task_title), // Message using task title
+                &format!("Merge: {} (toolflow)", task_title), // Message using task title
                 &branch_commit.tree()?,                          // Use the tree from branch
                 &[&main_commit, &branch_commit], // Parents: main HEAD and branch commit
             )?;

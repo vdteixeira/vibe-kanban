@@ -16,18 +16,18 @@ cargo build --release --bin mcp_task_server --manifest-path backend/Cargo.toml
 echo "📦 Creating distribution package..."
 
 # Copy the main binary
-cp target/release/vibe-kanban vibe-kanban
-cp target/release/mcp_task_server vibe-kanban-mcp
+cp target/release/toolflow toolflow
+cp target/release/mcp_task_server toolflow-mcp
 
-zip vibe-kanban.zip vibe-kanban
-zip vibe-kanban-mcp.zip vibe-kanban-mcp
+zip toolflow.zip toolflow
+zip toolflow-mcp.zip toolflow-mcp
 
-rm vibe-kanban vibe-kanban-mcp
+rm toolflow toolflow-mcp
 
-mv vibe-kanban.zip npx-cli/dist/macos-arm64/vibe-kanban.zip
-mv vibe-kanban-mcp.zip npx-cli/dist/macos-arm64/vibe-kanban-mcp.zip
+mv toolflow.zip npx-cli/dist/macos-arm64/toolflow.zip
+mv toolflow-mcp.zip npx-cli/dist/macos-arm64/toolflow-mcp.zip
 
 echo "✅ NPM package ready!"
 echo "📁 Files created:"
-echo "   - npx-cli/dist/macos-arm64/vibe-kanban.zip"
-echo "   - npx-cli/dist/macos-arm64/vibe-kanban-mcp.zip"
+echo "   - npx-cli/dist/macos-arm64/toolflow.zip"
+echo "   - npx-cli/dist/macos-arm64/toolflow-mcp.zip"
