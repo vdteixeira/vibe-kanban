@@ -164,6 +164,21 @@ function TaskDetailsHeader({
             )}
           </div>
         </div>
+
+        {/* PRP Field - shown when it has content */}
+        {task.prp && (
+          <div className="mt-2">
+            <div className="p-2 bg-purple-50 rounded border-l-2 border-purple-200 max-h-48 overflow-y-auto">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-medium text-purple-700">PRP</span>
+                <span className="text-xs text-purple-600">(Product Requirements Planning)</span>
+              </div>
+              <p className="text-xs whitespace-pre-wrap text-purple-700">
+                {task.prp}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
