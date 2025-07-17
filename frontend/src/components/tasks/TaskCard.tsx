@@ -104,6 +104,16 @@ export function TaskCard({
             </p>
           </div>
         )}
+        {task.prp && (
+          <div className="bg-purple-50 border border-purple-200 rounded-md p-2">
+            <p className="text-xs font-medium text-purple-700 mb-1">PRP</p>
+            <p className="text-xs text-purple-600 break-words">
+              {task.prp.length > 100
+                ? `${task.prp.substring(0, 100)}...`
+                : task.prp}
+            </p>
+          </div>
+        )}
       </div>
     </KanbanCard>
   );

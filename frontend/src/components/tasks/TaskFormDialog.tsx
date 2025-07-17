@@ -24,6 +24,7 @@ interface Task {
   project_id: string;
   title: string;
   description: string | null;
+  prp: string | null;
   status: TaskStatus;
   created_at: string;
   updated_at: string;
@@ -34,16 +35,18 @@ interface TaskFormDialogProps {
   onOpenChange: (open: boolean) => void;
   task?: Task | null; // Optional for create mode
   projectId?: string; // For file search functionality
-  onCreateTask?: (title: string, description: string) => Promise<void>;
+  onCreateTask?: (title: string, description: string, prp?: string) => Promise<void>;
   onCreateAndStartTask?: (
     title: string,
     description: string,
+    prp?: string,
     executor?: ExecutorConfig
   ) => Promise<void>;
   onUpdateTask?: (
     title: string,
     description: string,
-    status: TaskStatus
+    prp?: string,
+    status?: TaskStatus
   ) => Promise<void>;
 }
 
@@ -58,6 +61,7 @@ export function TaskFormDialog({
 }: TaskFormDialogProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [prp, setPrp] = useState('');
   const [status, setStatus] = useState<TaskStatus>('todo');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmittingAndStart, setIsSubmittingAndStart] = useState(false);
@@ -70,11 +74,13 @@ export function TaskFormDialog({
       // Edit mode - populate with existing task data
       setTitle(task.title);
       setDescription(task.description || '');
+      setPrp(task.prp || '');
       setStatus(task.status);
     } else {
       // Create mode - reset to defaults
       setTitle('');
       setDescription('');
+      setPrp('');
       setStatus('todo');
     }
   }, [task, isOpen]);
@@ -85,15 +91,16 @@ export function TaskFormDialog({
     setIsSubmitting(true);
     try {
       if (isEditMode && onUpdateTask) {
-        await onUpdateTask(title, description, status);
+        await onUpdateTask(title, description, prp, status);
       } else if (!isEditMode && onCreateTask) {
-        await onCreateTask(title, description);
+        await onCreateTask(title, description, prp);
       }
 
       // Reset form on successful creation
       if (!isEditMode) {
         setTitle('');
         setDescription('');
+        setPrp('');
         setStatus('todo');
       }
 
@@ -109,12 +116,13 @@ export function TaskFormDialog({
     setIsSubmittingAndStart(true);
     try {
       if (!isEditMode && onCreateAndStartTask) {
-        await onCreateAndStartTask(title, description, config?.executor);
+        await onCreateAndStartTask(title, description, prp, config?.executor);
       }
 
       // Reset form on successful creation
       setTitle('');
       setDescription('');
+      setPrp('');
       setStatus('todo');
 
       onOpenChange(false);
@@ -124,6 +132,7 @@ export function TaskFormDialog({
   }, [
     title,
     description,
+    prp,
     config?.executor,
     isEditMode,
     onCreateAndStartTask,
@@ -135,10 +144,12 @@ export function TaskFormDialog({
     if (task) {
       setTitle(task.title);
       setDescription(task.description || '');
+      setPrp(task.prp || '');
       setStatus(task.status);
     } else {
       setTitle('');
       setDescription('');
+      setPrp('');
       setStatus('todo');
     }
     onOpenChange(false);
@@ -225,6 +236,30 @@ export function TaskFormDialog({
               projectId={projectId}
             />
           </div>
+
+          {/* PRP field - show during planning phase or if it has content */}
+          {(status === 'planning' || (prp && prp.trim() !== '')) && (
+            <div>
+              <Label htmlFor="task-prp">PRP (Product Requirements Planning)</Label>
+              <FileSearchTextarea
+                value={prp}
+                onChange={setPrp}
+                placeholder="Enter product requirements and planning details..."
+                rows={3}
+                maxRows={8}
+                disabled={
+                  (isSubmitting || isSubmittingAndStart) ||
+                  (isEditMode && status !== 'planning')
+                }
+                projectId={projectId}
+              />
+              {isEditMode && status !== 'planning' && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  PRP can only be edited during the Planning phase.
+                </p>
+              )}
+            </div>
+          )}
 
           {isEditMode && (
             <div>

@@ -42,17 +42,17 @@ export type GitBranch = { name: string, is_current: boolean, is_remote: boolean,
 
 export type CreateBranch = { name: string, base_branch: string | null, };
 
-export type CreateTask = { project_id: string, title: string, description: string | null, };
+export type CreateTask = { project_id: string, title: string, description: string | null, prp: string | null, };
 
-export type CreateTaskAndStart = { project_id: string, title: string, description: string | null, executor: ExecutorConfig | null, };
+export type CreateTaskAndStart = { project_id: string, title: string, description: string | null, prp: string | null, executor: ExecutorConfig | null, };
 
 export type TaskStatus = "todo" | "planning" | "inprogress" | "inreview" | "done" | "cancelled";
 
-export type Task = { id: string, project_id: string, title: string, description: string | null, status: TaskStatus, created_at: string, updated_at: string, };
+export type Task = { id: string, project_id: string, title: string, description: string | null, prp: string | null, status: TaskStatus, created_at: string, updated_at: string, };
 
-export type TaskWithAttemptStatus = { id: string, project_id: string, title: string, description: string | null, status: TaskStatus, created_at: string, updated_at: string, has_in_progress_attempt: boolean, has_merged_attempt: boolean, has_failed_attempt: boolean, };
+export type TaskWithAttemptStatus = { id: string, project_id: string, title: string, description: string | null, prp: string | null, status: TaskStatus, created_at: string, updated_at: string, has_in_progress_attempt: boolean, has_merged_attempt: boolean, has_failed_attempt: boolean, };
 
-export type UpdateTask = { title: string | null, description: string | null, status: TaskStatus | null, };
+export type UpdateTask = { title: string | null, description: string | null, prp: string | null, status: TaskStatus | null, };
 
 export type TaskAttemptStatus = "setuprunning" | "setupcomplete" | "setupfailed" | "executorrunning" | "executorcomplete" | "executorfailed";
 

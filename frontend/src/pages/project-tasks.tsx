@@ -154,12 +154,13 @@ export function ProjectTasks() {
   );
 
   const handleCreateTask = useCallback(
-    async (title: string, description: string) => {
+    async (title: string, description: string, prp?: string) => {
       try {
         const createdTask = await tasksApi.create(projectId!, {
           project_id: projectId!,
           title,
           description: description || null,
+          prp: prp || null,
         });
         await fetchTasks();
         // Open the newly created task in the details panel
@@ -174,12 +175,13 @@ export function ProjectTasks() {
   );
 
   const handleCreateAndStartTask = useCallback(
-    async (title: string, description: string, executor?: ExecutorConfig) => {
+    async (title: string, description: string, prp?: string, executor?: ExecutorConfig) => {
       try {
         const payload: CreateTaskAndStart = {
           project_id: projectId!,
           title,
           description: description || null,
+          prp: prp || null,
           executor: executor || null,
         };
         const result = await tasksApi.createAndStart(projectId!, payload);
@@ -194,14 +196,15 @@ export function ProjectTasks() {
   );
 
   const handleUpdateTask = useCallback(
-    async (title: string, description: string, status: TaskStatus) => {
+    async (title: string, description: string, prp?: string, status?: TaskStatus) => {
       if (!editingTask) return;
 
       try {
         await tasksApi.update(projectId!, editingTask.id, {
           title,
           description: description || null,
-          status,
+          prp: prp || null,
+          status: status || editingTask.status,
         });
         await fetchTasks();
         setEditingTask(null);
@@ -275,6 +278,7 @@ export function ProjectTasks() {
         await tasksApi.update(projectId!, taskId, {
           title: task.title,
           description: task.description,
+          prp: task.prp,
           status: newStatus,
         });
       } catch (err) {

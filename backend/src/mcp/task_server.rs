@@ -22,6 +22,8 @@ pub struct CreateTaskRequest {
     pub title: String,
     #[schemars(description = "Optional description of the task")]
     pub description: Option<String>,
+    #[schemars(description = "Optional PRP (Product Requirements Planning) field")]
+    pub prp: Option<String>,
 }
 
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
@@ -83,6 +85,8 @@ pub struct TaskSummary {
     pub title: String,
     #[schemars(description = "Optional description of the task")]
     pub description: Option<String>,
+    #[schemars(description = "Optional PRP (Product Requirements Planning) field")]
+    pub prp: Option<String>,
     #[schemars(description = "Current status of the task")]
     pub status: String,
     #[schemars(description = "When the task was created")]
@@ -116,6 +120,7 @@ pub struct ListTasksFilters {
 fn parse_task_status(status_str: &str) -> Option<TaskStatus> {
     match status_str.to_lowercase().as_str() {
         "todo" => Some(TaskStatus::Todo),
+        "planning" => Some(TaskStatus::Planning),
         "inprogress" | "in-progress" | "in_progress" => Some(TaskStatus::InProgress),
         "inreview" | "in-review" | "in_review" => Some(TaskStatus::InReview),
         "done" | "completed" => Some(TaskStatus::Done),
@@ -145,7 +150,9 @@ pub struct UpdateTaskRequest {
     pub title: Option<String>,
     #[schemars(description = "New description for the task")]
     pub description: Option<String>,
-    #[schemars(description = "New status: 'todo', 'inprogress', 'inreview', 'done', 'cancelled'")]
+    #[schemars(description = "New PRP (Product Requirements Planning) field")]
+    pub prp: Option<String>,
+    #[schemars(description = "New status: 'todo', 'planning', 'inprogress', 'inreview', 'done', 'cancelled'")]
     pub status: Option<String>,
 }
 
@@ -217,6 +224,7 @@ impl TaskServer {
             project_id,
             title,
             description,
+            prp,
         }: CreateTaskRequest,
     ) -> Result<CallToolResult, RmcpError> {
         // Parse project_id from string to UUID
@@ -268,6 +276,7 @@ impl TaskServer {
             project_id: project_uuid,
             title: title.clone(),
             description: description.clone(),
+            prp: prp.clone(),
         };
 
         match Task::create(&self.pool, &create_task_data, task_id).await {
@@ -445,6 +454,7 @@ impl TaskServer {
                         id: task.id.to_string(),
                         title: task.title,
                         description: task.description,
+                        prp: task.prp,
                         status: task_status_to_string(&task.status),
                         created_at: task.created_at.to_rfc3339(),
                         updated_at: task.updated_at.to_rfc3339(),
@@ -497,6 +507,7 @@ impl TaskServer {
             task_id,
             title,
             description,
+            prp,
             status,
         }: UpdateTaskRequest,
     ) -> Result<CallToolResult, RmcpError> {
@@ -574,6 +585,7 @@ impl TaskServer {
 
         let new_title = title.unwrap_or(current_task.title);
         let new_description = description.or(current_task.description);
+        let new_prp = prp.or(current_task.prp);
         let new_status = status_enum.unwrap_or(current_task.status);
 
         match Task::update(
@@ -582,6 +594,7 @@ impl TaskServer {
             project_uuid,
             new_title,
             new_description,
+            new_prp,
             new_status,
         )
         .await
@@ -591,6 +604,7 @@ impl TaskServer {
                     id: updated_task.id.to_string(),
                     title: updated_task.title,
                     description: updated_task.description,
+                    prp: updated_task.prp,
                     status: task_status_to_string(&updated_task.status),
                     created_at: updated_task.created_at.to_rfc3339(),
                     updated_at: updated_task.updated_at.to_rfc3339(),
@@ -762,6 +776,7 @@ impl TaskServer {
                     id: task.id.to_string(),
                     title: task.title,
                     description: task.description,
+                    prp: task.prp,
                     status: task_status_to_string(&task.status),
                     created_at: task.created_at.to_rfc3339(),
                     updated_at: task.updated_at.to_rfc3339(),
